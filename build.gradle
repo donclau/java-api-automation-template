@@ -1,0 +1,66 @@
+
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '4.3.0'
+}
+
+group = 'com.automation'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+ext {
+    cucumberVersion = '7.34.9'
+    restAssuredVersion = '6.1.0'
+    junitPlatformVersion = '1.14.3'
+}
+
+dependencies {
+
+    // Cucumber
+    testImplementation platform(
+            "io.cucumber:cucumber-bom:${cucumberVersion}"
+    )
+
+    testImplementation 'io.cucumber:cucumber-java'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine'
+
+    // JUnit Platform
+    testImplementation(
+            "org.junit.platform:junit-platform-suite:${junitPlatformVersion}"
+    )
+
+    testRuntimeOnly(
+            "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
+    )
+
+    // REST Assured
+    testImplementation(
+            "io.rest-assured:rest-assured:${restAssuredVersion}"
+    )
+
+    // Allure adapter for Cucumber 7
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.35.5'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.14.3'
+
+// JSON Serialization / Deserialization
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
+}
+
+test {
+    useJUnitPlatform()
+
+    systemProperty(
+            'cucumber.junit-platform.naming-strategy',
+            'long'
+    )
+}
